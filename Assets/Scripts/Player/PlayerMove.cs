@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 
 public class PlayerMove : MonoBehaviour {
-    public event Action<float> OnSprint;
+    public event Action<float> OnStaminaChanged;
 
     [Header("References")]
     [SerializeField] private PlayerInput playerInput;
@@ -44,11 +44,12 @@ public class PlayerMove : MonoBehaviour {
         } else if (isMoving && playerInput.IsSprinting && currentStamina > 0) {
             currentSpeed *= sprintMultiplier;
             currentStamina = Mathf.Max(currentStamina - (staminaDrainRate * Time.deltaTime), 0f);
-            OnSprint?.Invoke(currentStamina);
+            OnStaminaChanged?.Invoke(currentStamina / maxStamina);
         }
 
         if (!playerInput.IsSprinting && currentStamina < maxStamina) {
             currentStamina = Mathf.Min(currentStamina + (staminaGainRate * Time.deltaTime), maxStamina);
+            OnStaminaChanged?.Invoke(currentStamina / maxStamina);
         }
 
         Vector3 move = transform.right * playerInput.MoveInput.x + transform.forward * playerInput.MoveInput.y;

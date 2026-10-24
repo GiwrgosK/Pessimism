@@ -14,14 +14,14 @@ public class UIManager : MonoBehaviour {
         InventorySystem.Instance.OnActiveSlotChanged += InventorySystem_OnActiveSlotChanged;
         InventorySystem.Instance.OnInventoryChanged += InventorySystem_OnInventoryChanged;
         playerHealth.OnHealthChanged += PlayerHealth_OnHealthChanged;
-        playerMove.OnSprint += PlayerMove_OnSprint;
+        playerMove.OnStaminaChanged += PlayerMove_OnStaminaChanged;
     }
 
     private void OnDestroy() {
         InventorySystem.Instance.OnActiveSlotChanged -= InventorySystem_OnActiveSlotChanged;
         InventorySystem.Instance.OnInventoryChanged -= InventorySystem_OnInventoryChanged;
         playerHealth.OnHealthChanged -= PlayerHealth_OnHealthChanged;
-        playerMove.OnSprint += PlayerMove_OnSprint;
+        playerMove.OnStaminaChanged += PlayerMove_OnStaminaChanged;
     }
 
     private void InventorySystem_OnActiveSlotChanged(int newActiveSlotIndex) {
@@ -33,12 +33,10 @@ public class UIManager : MonoBehaviour {
 
     private void PlayerHealth_OnHealthChanged(float amount) {
         healthSlider.value -= amount;
-        Debug.Log($"Health Slider Value: {healthSlider.value}");
     }
 
-    private void PlayerMove_OnSprint(float amount) {
-        staminaSlider.value -= amount;
-         Debug.Log($"Stamina Slider Value: {staminaSlider.value}");
+    private void PlayerMove_OnStaminaChanged(float amount) {
+        staminaSlider.value = amount;
     }
 
     private void UpdateUI(ItemData itemData) {
